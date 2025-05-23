@@ -25,7 +25,7 @@ namespace Project1_Angular.Controllers
 
             [Authorize]
             [HttpPost]
-            public async Task<IActionResult> Create([FromBody] ComentarioCreateDTO dto)
+            public async Task<IActionResult> Create([FromBody] CreateComentarioDto dto)
             {
                 var novo = await _comentarioService.CriarAsync(dto);
                 return Ok(novo);

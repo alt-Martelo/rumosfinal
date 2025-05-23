@@ -34,4 +34,3 @@ namespace Project1_Angular.Data
         }
     }
 }
-}
