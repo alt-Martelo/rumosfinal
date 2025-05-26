@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Project1_Angular.Services;
+using Project1_Angular.DTOs;
 
 namespace Project1_Angular.Controllers
 {
@@ -14,20 +16,20 @@ namespace Project1_Angular.Controllers
             }
 
             [HttpPost("register")]
-            public async Task<IActionResult> Register([FromBody] RegisterDTO dto)
+            public async Task<IActionResult> Register([FromBody] RegisterDto dto)
             {
-                var resultado = await _utilizadorService.RegistarAsync(dto);
-                return resultado.Sucesso ? Ok(resultado) : BadRequest(resultado.Mensagem);
+                var resultado = await _utilizadorService.RegisterUserAsync(dto);
+                return resultado.Sucess ? Ok(resultado) : BadRequest(resultado.Message);
             }
 
             [HttpPost("login")]
-            public async Task<IActionResult> Login([FromBody] LoginDTO dto)
+            public async Task<IActionResult> Login([FromBody] LoginDto dto)
             {
-                var token = await _utilizadorService.AutenticarAsync(dto);
+                var token = await _utilizadorService.LoginAsync(dto);
                 return token == null ? Unauthorized("Credenciais inválidas.") : Ok(new { Token = token });
             }
 
-            // Pode incluir métodos adicionais para gerir perfil, favoritos, etc.
+            
         }
  }
 

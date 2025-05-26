@@ -2,6 +2,8 @@
 {
     public class IngredienteReceita
     {
+        internal string Nome;
+
         public int ReceitaId { get; set; }
         public Receita Receita { get; set; }
 

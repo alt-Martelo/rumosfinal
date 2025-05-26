@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Project1_Angular.DTOs;
+using Project1_Angular.Services;
 
 namespace Project1_Angular.Controllers
 {
-    public class ComentariosController
-    {
+   
         [ApiController]
         [Route("api/[controller]")]
         public class ComentariosController : ControllerBase
@@ -19,15 +20,15 @@ namespace Project1_Angular.Controllers
             [HttpGet("receita/{receitaId}")]
             public async Task<IActionResult> GetByReceitaId(int receitaId)
             {
-                var comentarios = await _comentarioService.ObterPorReceitaAsync(receitaId);
+                var comentarios = await _comentarioService.GetComentariosByReceitaIdAsync(receitaId);
                 return Ok(comentarios);
             }
 
             [Authorize]
             [HttpPost]
-            public async Task<IActionResult> Create([FromBody] CreateComentarioDto dto)
+            public async Task<IActionResult> Create([FromBody] ComentarioCreateDto dto)
             {
-                var novo = await _comentarioService.CriarAsync(dto);
+                var novo = await _comentarioService.CreateComentarioAsync(dto);
                 return Ok(novo);
             }
 
@@ -35,9 +36,10 @@ namespace Project1_Angular.Controllers
             [HttpDelete("{id}")]
             public async Task<IActionResult> Delete(int id)
             {
-                var sucesso = await _comentarioService.RemoverAsync(id);
+                var sucesso = await _comentarioService.DeleteComentarioAsync(id);
                 return sucesso ? NoContent() : NotFound();
             }
         }
-    }
+
 }
+
