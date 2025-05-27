@@ -40,7 +40,7 @@ namespace Project1_Angular.Services
                 Ingredientes = dto.Ingredientes.Select(i => new IngredienteReceita { Nome = i }).ToList(),
                 Utilizador = utilizador,
                 DataCriacao = DateTime.UtcNow,
-                Comentarios = new List<Comentario>() /
+                Comentarios = new List<Comentario>() 
             };
 
             _context.Receitas.Add(receita);

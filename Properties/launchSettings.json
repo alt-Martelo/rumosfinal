@@ -15,8 +15,23 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+
+        /* only for swagger start up
+          "commandName": "Project",
+          "dotnetRunMessages": true,
+          "launchBrowser": true,
+          "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:5045;http://localhost:7231",
+          "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+          }
+        }
+     */
+
+
       }
-    },
+    }
+  },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
@@ -25,5 +40,5 @@
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       }
     }
-  }
+  
 }

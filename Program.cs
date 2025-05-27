@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Project1_Angular.Data;
 using Project1_Angular.Models;
+using Project1_Angular.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,9 +22,10 @@ builder.Services.AddIdentityServer()
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
-
+builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<ITokenService,TokenService>();
 
 var app = builder.Build();
 
@@ -31,6 +33,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+    
 }
 else
 {
@@ -50,6 +53,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+//post man temp fix
+app.MapControllers();
 
 app.MapFallbackToFile("index.html");
 
