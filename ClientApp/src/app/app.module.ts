@@ -13,6 +13,8 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { ContactComponent } from './contact/contact.component';
+import { CriarReceitaComponent } from './criar-receita/criar-receita.component';
+
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { ContactComponent } from './contact/contact.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    ContactComponent
+    ContactComponent,
+    CriarReceitaComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,6 +36,8 @@ import { ContactComponent } from './contact/contact.component';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
       { path: 'contact', component: ContactComponent },
+      { path: 'CriarReceita', component: CriarReceitaComponent},
+
     ])
   ],
   providers: [

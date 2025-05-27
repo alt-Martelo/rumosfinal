@@ -1,14 +1,11 @@
 {
   "dependencies": {
-    "mssql2": {
-      "ignored": "true",
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:AzureConnection"
+    "secrets1": {
+      "type": "secrets"
     },
     "mssql1": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:DefaultConnection",
-      "dynamicId": null
+      "connectionId": "ConnectionStrings:DefaultConnection"
     }
   }
 }

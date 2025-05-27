@@ -4,6 +4,9 @@ namespace Project1_Angular.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public string? Address { get; set; }
+        public  ICollection<Receita> Receitas { get; set; }
+        public  ICollection<Comentario> Comentarios { get; set; }
+
+        public bool isAdmin { get; set; }
     }
 }

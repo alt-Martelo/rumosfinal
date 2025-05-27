@@ -1,59 +1,124 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Project1_Angular.Services;
-using Project1_Angular.DTOs;
+using Microsoft.EntityFrameworkCore;
+using Project1_Angular.Data;
+using Project1_Angular.Models;
 
 namespace Project1_Angular.Controllers
-
 {
-        [ApiController]
-        [Route("api/[controller]")]
-        public class ReceitasController : ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ReceitasController : ControllerBase
+    {
+        private readonly ApplicationDbContext _context;
+
+        public ReceitasController(ApplicationDbContext context)
         {
-            private readonly IReceitaService _receitaService;
-
-            public ReceitasController(IReceitaService receitaService)
-            {
-                _receitaService = receitaService;
-            }
-
-            [HttpGet]
-            public async Task<IActionResult> GetAll()
-            {
-                var receitas = await _receitaService.GetAllReceitasAsync();
-                return Ok(receitas);
-            }
-
-            [HttpGet("{id}")]
-            public async Task<IActionResult> GetById(int id)
-            {
-                var receita = await _receitaService.GetReceitaByIdAsync(id);
-                return receita == null ? NotFound() : Ok(receita);
-            }
-
-            [Authorize]
-            [HttpPost]
-            public async Task<IActionResult> Create([FromBody] ReceitaCreateDto dto)
-            {
-                var novaReceita = await _receitaService.CreateReceitaAsync(dto);
-                return CreatedAtAction(nameof(GetById), new { id = novaReceita.Id }, novaReceita);
-            }
-
-            [Authorize]
-            [HttpPut("{id}")]
-            public async Task<IActionResult> Update(int id, [FromBody] ReceitaUpdateDto dto)
-            {
-                var resultado = await _receitaService.UpdateReceitaAsync(id, dto);
-                return resultado ? NoContent() : NotFound();
-            }
-
-            [Authorize]
-            [HttpDelete("{id}")]
-            public async Task<IActionResult> Delete(int id)
-            {
-                var resultado = await _receitaService.DeleteReceitaAsync(id);
-                return resultado ? NoContent() : NotFound();
-            }
+            _context = context;
         }
- }
 
+        // GET: api/Receitas
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Receita>>> GetReceitas()
+        {
+          if (_context.Receitas == null)
+          {
+              return NotFound();
+          }
+            return await _context.Receitas.ToListAsync();
+        }
+
+        // GET: api/Receitas/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Receita>> GetReceita(int id)
+        {
+          if (_context.Receitas == null)
+          {
+              return NotFound();
+          }
+            var receita = await _context.Receitas.FindAsync(id);
+
+            if (receita == null)
+            {
+                return NotFound();
+            }
+
+            return receita;
+        }
+
+        // PUT: api/Receitas/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutReceita(int id, Receita receita)
+        {
+            if (id != receita.ReceitaId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(receita).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ReceitaExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Receitas
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Receita>> PostReceita(Receita receita)
+        {
+          if (_context.Receitas == null)
+          {
+              return Problem("Entity set 'ApplicationDbContext.Receitas'  is null.");
+          }
+            _context.Receitas.Add(receita);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetReceita", new { id = receita.ReceitaId }, receita);
+        }
+
+        // DELETE: api/Receitas/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReceita(int id)
+        {
+            if (_context.Receitas == null)
+            {
+                return NotFound();
+            }
+            var receita = await _context.Receitas.FindAsync(id);
+            if (receita == null)
+            {
+                return NotFound();
+            }
+
+            _context.Receitas.Remove(receita);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool ReceitaExists(int id)
+        {
+            return (_context.Receitas?.Any(e => e.ReceitaId == id)).GetValueOrDefault();
+        }
+    }
+}

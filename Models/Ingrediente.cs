@@ -2,9 +2,10 @@
 {
     public class Ingrediente
     {
-        public int Id { get; set; }
-        public string Nome { get; set; }
+        public int IngredienteId { get; set; }
+        public required string Nome { get; set; }
 
-        public ICollection<IngredienteReceita> IngredienteReceitas { get; set; }
+        public required string Unidade { get; set; }
+        // public ICollection<IngredienteReceita> IngredienteReceitas { get; set; }
     }
 }
