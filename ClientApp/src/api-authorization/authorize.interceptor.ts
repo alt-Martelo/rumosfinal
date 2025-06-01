@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AuthorizeService } from './authorize.service';
 import { mergeMap } from 'rxjs/operators';
 
@@ -51,4 +51,11 @@ export class AuthorizeInterceptor implements HttpInterceptor {
     // doesn't have the same origin.
     return false;
   }
+  getAccessToken(): Observable<string | null> {
+    const token = localStorage.getItem('access_token');
+    console.log("TOKEN OBTIDO:", token);
+    return of(token);
+  }
+
+
 }

@@ -1,1 +1,90 @@
-<p>criar-receita works!</p>
+<div class="container mt-4">
+  <h2>Criar Receita</h2>
+
+  <form [formGroup]="receitaForm" (ngSubmit)="criarReceita()">
+    <div class="mb-3">
+      <label for="titulo" class="form-label">Título</label>
+      <input id="titulo" class="form-control" formControlName="titulo" />
+      <div *ngIf="receitaForm.get('titulo')?.invalid && receitaForm.get('titulo')?.touched" class="text-danger">
+        Título é obrigatório.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="descricao" class="form-label">Descrição</label>
+      <textarea id="descricao" class="form-control" formControlName="descricao"></textarea>
+      <div *ngIf="receitaForm.get('descricao')?.invalid && receitaForm.get('descricao')?.touched" class="text-danger">
+        Descrição é obrigatória.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="categoria" class="form-label">Categoria</label>
+      <select id="categoria" class="form-select" formControlName="categoria">
+        <option value="" disabled>Selecione a categoria</option>
+        <option value="Entrada">Entrada</option>
+        <option value="Prato Principal">Prato Principal</option>
+        <option value="Sobremesa">Sobremesa</option>
+        <option value="Bebida">Bebida</option>
+        <option value="Lanche">Lanche</option>
+      </select>
+      <div *ngIf="receitaForm.get('categoria')?.invalid && receitaForm.get('categoria')?.touched" class="text-danger">
+        Categoria é obrigatória.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="dificuldade" class="form-label">Dificuldade (1 a 5)</label>
+      <input id="dificuldade" type="number" min="1" max="5" class="form-control" formControlName="dificuldade" />
+      <div *ngIf="receitaForm.get('dificuldade')?.invalid && receitaForm.get('dificuldade')?.touched" class="text-danger">
+        Dificuldade é obrigatória e deve estar entre 1 e 5.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="duracaoMinutos" class="form-label">Duração (minutos)</label>
+      <input id="duracaoMinutos" type="number" min="1" class="form-control" formControlName="duracaoMinutos" />
+      <div *ngIf="receitaForm.get('duracaoMinutos')?.invalid && receitaForm.get('duracaoMinutos')?.touched" class="text-danger">
+        Duração é obrigatória e deve ser maior que zero.
+      </div>
+    </div>
+
+    <hr>
+    <h4>Ingredientes</h4>
+
+    <div formArrayName="ingredientes">
+      <div *ngFor="let ing of ingredientes.controls; let i = index" [formGroupName]="i" class="row mb-2">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Nome" formControlName="nome" />
+          <div *ngIf="ing.get('nome')?.invalid && ing.get('nome')?.touched" class="text-danger">
+            Nome é obrigatório.
+          </div>
+        </div>
+        <div class="col">
+          <input type="number" class="form-control" placeholder="Quantidade" formControlName="quantidade" />
+          <div *ngIf="ing.get('quantidade')?.invalid && ing.get('quantidade')?.touched" class="text-danger">
+            Quantidade deve ser maior que zero.
+          </div>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Unidade" formControlName="unidade" />
+          <div *ngIf="ing.get('unidade')?.invalid && ing.get('unidade')?.touched" class="text-danger">
+            Unidade é obrigatória.
+          </div>
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-danger" (click)="removerIngrediente(i)">Remover</button>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-secondary mt-2" (click)="adicionarIngrediente()">+ Adicionar Ingrediente</button>
+
+    <div class="mt-4">
+      <button type="submit" class="btn btn-success" [disabled]="receitaForm.invalid">Criar Receita</button>
+    </div>
+  </form>
+
+  <div *ngIf="sucesso" class="alert alert-success mt-3">Receita criada com sucesso!</div>
+  <div *ngIf="erro" class="alert alert-danger mt-3">Erro ao criar a receita.</div>
+</div>

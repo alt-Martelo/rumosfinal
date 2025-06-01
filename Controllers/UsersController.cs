@@ -22,7 +22,7 @@ namespace Project1_Angular.Controllers
             _context = context;
         }
 
-        // GET: api/Comentarios
+        // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers()
         {

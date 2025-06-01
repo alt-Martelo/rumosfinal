@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project1_Angular.Data;
@@ -10,6 +12,7 @@ using Project1_Angular.Models;
 
 namespace Project1_Angular.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ReceitasController : ControllerBase
@@ -84,16 +87,56 @@ namespace Project1_Angular.Controllers
         // POST: api/Receitas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Receita>> PostReceita(Receita receita)
+        public async Task<IActionResult> PostReceita(Receita receita)
         {
-          if (_context.Receitas == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Receitas'  is null.");
-          }
+            var userName = User?.Identity?.Name;
+
+            if (string.IsNullOrEmpty(userName))
+                return Unauthorized();
+
+            var utilizador = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+
+            if (utilizador == null)
+                return Unauthorized();
+
+            receita.Utilizador = utilizador;
+
+            // Prepara a lista de ingredientes finais
+            var novaLista = new List<IngredienteReceita>();
+
+            foreach (var ir in receita.Ingredientes)
+            {
+                if (string.IsNullOrWhiteSpace(ir.Ingrediente?.Nome))
+                    continue;
+
+                // Verifica se o ingrediente já existe pelo nome
+                var ingredienteExistente = await _context.Ingredientes
+                    .FirstOrDefaultAsync(i => i.Nome.ToLower() == ir.Ingrediente.Nome.ToLower());
+
+                if (ingredienteExistente == null)
+                {
+                    ingredienteExistente = new Ingrediente
+                    {
+                        Nome = ir.Ingrediente.Nome,
+                        Unidade = ir.Ingrediente.Unidade
+                    };
+                    _context.Ingredientes.Add(ingredienteExistente);
+                    await _context.SaveChangesAsync(); // importante para gerar o Id
+                }
+
+                novaLista.Add(new IngredienteReceita
+                {
+                    Quantidade = ir.Quantidade,
+                    Ingrediente = ingredienteExistente
+                });
+            }
+
+            receita.Ingredientes = novaLista;
+
             _context.Receitas.Add(receita);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReceita", new { id = receita.ReceitaId }, receita);
+            return Ok(receita);
         }
 
         // DELETE: api/Receitas/5

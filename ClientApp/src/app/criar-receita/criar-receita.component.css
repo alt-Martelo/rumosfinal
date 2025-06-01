@@ -1,0 +1,164 @@
+/* Container */
+.form-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 25px 30px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+  /* Form Title */
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+  }
+
+  /* Form Labels */
+  .form-container label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+  }
+
+  /* Inputs, selects, textareas */
+  .form-container input[type="text"],
+  .form-container input[type="number"],
+  .form-container textarea,
+  .form-container select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1.8px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+
+    .form-container input[type="text"]:focus,
+    .form-container input[type="number"]:focus,
+    .form-container textarea:focus,
+    .form-container select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+    }
+
+  /* Textarea size */
+  .form-container textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  /* Ingredient row */
+  .form-container .ingrediente-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+    .form-container .ingrediente-row .col {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .form-container .ingrediente-row .col-auto {
+      flex: 0 0 auto;
+    }
+
+  /* Buttons */
+  .form-container .btn {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .form-container .btn-success {
+    background-color: #28a745;
+    color: white;
+  }
+
+    .form-container .btn-success:hover {
+      background-color: #218838;
+    }
+
+  .form-container .btn-danger {
+    background-color: #dc3545;
+    color: white;
+  }
+
+    .form-container .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+  .form-container .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    margin-top: 10px;
+  }
+
+    .form-container .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+  /* Submit button */
+  .form-container button[type="submit"] {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    background-color: #007bff;
+    border-radius: 6px;
+  }
+
+    .form-container button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+  /* Alert messages */
+  .form-container .alert {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .form-container .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  .form-container .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-container {
+    padding: 20px 15px;
+  }
+
+    .form-container .ingrediente-row {
+      flex-direction: column;
+    }
+
+    .form-container .btn {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .form-container .btn-secondary {
+      margin-top: 15px;
+    }
+}

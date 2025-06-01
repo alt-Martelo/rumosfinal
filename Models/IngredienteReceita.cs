@@ -8,10 +8,10 @@ namespace Project1_Angular.Models
     {
 
         //public int ReceitaId { get; set; } // PK
-        public Receita Receita { get; set; }
+        public Receita? Receita { get; set; }
         
         //public int IngredienteId { get; set; } // PK
-        public Ingrediente Ingrediente { get; set; }
+        public Ingrediente? Ingrediente { get; set; }
 
         public double Quantidade { get; set; }
         

@@ -20,8 +20,8 @@ namespace Project1_Angular.Models
         public double AverageRating { get { if (Comentarios.IsNullOrEmpty()) return 0;
                 return Comentarios.Average(c => c.Rating);} }
         // public int UtilizadorId { get; set; }
-        public  ApplicationUser Utilizador { get; set; } // required 
-        public  ICollection<IngredienteReceita> Ingredientes { get; set; }
-        public ICollection<Comentario> Comentarios { get; set; }
+        public  ApplicationUser? Utilizador { get; set; } // required 
+        public  ICollection<IngredienteReceita>? Ingredientes { get; set; }
+        public ICollection<Comentario>? Comentarios { get; set; }
     }
 }

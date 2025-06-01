@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User, UserManager } from 'oidc-client';
-import { BehaviorSubject, concat, from, Observable } from 'rxjs';
+import { BehaviorSubject, concat, from, Observable, of } from 'rxjs';
 import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { ApplicationPaths, ApplicationName } from './api-authorization.constants';
 
@@ -55,10 +55,16 @@ export class AuthorizeService {
       this.userSubject.asObservable());
   }
 
-  public getAccessToken(): Observable<string | null> {
-    return from(this.ensureUserManagerInitialized())
-      .pipe(mergeMap(() => from(this.userManager!.getUser())),
-        map(user => user && user.access_token));
+  //public getAccessToken(): Observable<string | null> {
+  //  return from(this.ensureUserManagerInitialized())
+  //    .pipe(mergeMap(() => from(this.userManager!.getUser())),
+  //      map(user => user && user.access_token));
+  //}
+
+  getAccessToken(): Observable<string | null> {
+    const token = localStorage.getItem('access_token');
+    console.log("TOKEN OBTIDO (AuthorizeService):", token); // Debug opcional
+    return of(token);
   }
 
   // We try to authenticate the user in three different ways:
