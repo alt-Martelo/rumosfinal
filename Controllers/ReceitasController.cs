@@ -12,7 +12,8 @@ using Project1_Angular.Models;
 
 namespace Project1_Angular.Controllers
 {
-    [Authorize]
+    //[Authorize(AuthenticationSchemes = "Identity.Application")]
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class ReceitasController : ControllerBase
@@ -32,7 +33,12 @@ namespace Project1_Angular.Controllers
           {
               return NotFound();
           }
-            return await _context.Receitas.ToListAsync();
+            return await _context.Receitas
+            .Include(r => r.Ingredientes)
+            .ThenInclude(ir => ir.Ingrediente)
+            .Include(r => r.Comentarios)
+            .Include(r => r.Utilizador)
+            .ToListAsync();
         }
 
         // GET: api/Receitas/5
@@ -43,7 +49,12 @@ namespace Project1_Angular.Controllers
           {
               return NotFound();
           }
-            var receita = await _context.Receitas.FindAsync(id);
+            var receita = await _context.Receitas
+          .Include(r => r.Ingredientes)
+          .ThenInclude(ir => ir.Ingrediente)
+          .Include(r => r.Comentarios)
+          .Include(r => r.Utilizador)
+          .FirstOrDefaultAsync(r => r.ReceitaId == id);
 
             if (receita == null)
             {
@@ -89,17 +100,11 @@ namespace Project1_Angular.Controllers
         [HttpPost]
         public async Task<IActionResult> PostReceita(Receita receita)
         {
-            var userName = User?.Identity?.Name;
+            //var userName = "testuser"; // ⬅️ Replace with a test user name
+            //var utilizador = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
 
-            if (string.IsNullOrEmpty(userName))
-                return Unauthorized();
-
-            var utilizador = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
-
-            if (utilizador == null)
-                return Unauthorized();
-
-            receita.Utilizador = utilizador;
+            //if (utilizador == null)
+            //    return Unauthorized();
 
             // Prepara a lista de ingredientes finais
             var novaLista = new List<IngredienteReceita>();
